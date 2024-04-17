@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr14hf5hn4tp5"]
+
+[ext_resource type="Texture2D" uid="uid://bqe782vjeix25" path="res://img/backgroud.png" id="1_51gst"]
+[ext_resource type="Script" path="res://YunoDesktop.cs" id="1_ogbat"]
+[ext_resource type="StyleBox" uid="uid://cfh1uqw6lpksw" path="res://style/transbk.tres" id="2_gsi10"]
+[ext_resource type="Theme" uid="uid://c8f4q4asmagvt" path="res://style/titlelabel.tres" id="3_6cb30"]
+[ext_resource type="Script" path="res://HomeProject.cs" id="3_gbua5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnpks"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="YunoDesktop" type="Node"]
+script = ExtResource("1_ogbat")
+
+[node name="HomeScroll" type="ScrollContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HomeContainer" type="PanelContainer" parent="HomeScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_gnpks")
+
+[node name="Home" type="VBoxContainer" parent="HomeScroll/HomeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="HomeBkColor" type="ColorRect" parent="HomeScroll/HomeContainer/Home"]
+layout_mode = 2
+
+[node name="HomeBkImg" type="TextureRect" parent="HomeScroll/HomeContainer/Home"]
+layout_mode = 2
+texture = ExtResource("1_51gst")
+expand_mode = 5
+
+[node name="HomeMain" type="MarginContainer" parent="HomeScroll/HomeContainer/Home"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = -200
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 100
+
+[node name="HomeStyle" type="PanelContainer" parent="HomeScroll/HomeContainer/Home/HomeMain"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_gsi10")
+
+[node name="HomeProject" type="VBoxContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle"]
+layout_mode = 2
+script = ExtResource("3_gbua5")
+
+[node name="HomeArticle" type="Label" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+layout_mode = 2
+theme = ExtResource("3_6cb30")
+text = "技术备录"
+
+[node name="HomeArticleContainer" type="HFlowContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+layout_mode = 2
+theme_override_constants/h_separation = 35
+theme_override_constants/v_separation = 35
+alignment = 1
+
+[node name="HomeLife" type="Label" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+layout_mode = 2
+theme = ExtResource("3_6cb30")
+text = "生活题记"
+
+[node name="HomeLifeContainer" type="HFlowContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+layout_mode = 2
+theme_override_constants/h_separation = 35
+theme_override_constants/v_separation = 35
+alignment = 1
+
+[node name="HomeVideo" type="Label" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+layout_mode = 2
+theme = ExtResource("3_6cb30")
+text = "视频资源"
+
+[node name="HomeVideoContainer" type="HFlowContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+layout_mode = 2
+alignment = 1
+
+[node name="ArticleRequest" type="HTTPRequest" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+
+[node name="LifeRequest" type="HTTPRequest" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
+
+[node name="VideoRequest" type="HTTPRequest" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]

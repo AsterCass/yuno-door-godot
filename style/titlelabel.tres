@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c8f4q4asmagvt"]
+
+[ext_resource type="StyleBox" uid="uid://b1r8jq5qet01m" path="res://style/titlelabelnormal.tres" id="1_0xkg5"]
+
+[resource]
+Label/colors/font_color = Color(0.298039, 0.301961, 0.313726, 1)
+Label/font_sizes/font_size = 48
+Label/styles/normal = ExtResource("1_0xkg5")

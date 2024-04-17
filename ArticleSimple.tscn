@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://0sffbl8ylhnw"]
+
+[ext_resource type="StyleBox" uid="uid://bawggbd2nu5ye" path="res://style/articlesimplebk.tres" id="1_s1tlr"]
+[ext_resource type="StyleBox" uid="uid://g8aj1o0yjoj0" path="res://style/blackbg.tres" id="2_ngbn5"]
+
+[node name="Card" type="PanelContainer"]
+custom_minimum_size = Vector2(450, 300)
+offset_right = 450.0
+offset_bottom = 300.0
+theme_override_styles/panel = ExtResource("1_s1tlr")
+
+[node name="CardContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = -25
+theme_override_constants/margin_top = -25
+
+[node name="CardBgContainer" type="PanelContainer" parent="CardContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_ngbn5")
+
+[node name="Title" type="Label" parent="CardContainer/CardBgContainer"]
+layout_mode = 2
+text = "asdfasfsadlfjaslfjaslfjasljflasjflasjflasjflasjflsaj"

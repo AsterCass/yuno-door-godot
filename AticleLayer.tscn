@@ -1,0 +1,228 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0fb2jwreo5mm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hyvac"]
+content_margin_left = 0.0
+content_margin_top = 12.0
+content_margin_right = 0.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cx8yq"]
+content_margin_left = 48.0
+content_margin_top = 24.0
+content_margin_right = 48.0
+content_margin_bottom = 24.0
+
+[node name="AticleLayer" type="CanvasLayer"]
+follow_viewport_enabled = true
+
+[node name="AticleContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="AticleContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hyvac")
+text = "使用ShardingSphere实现分布式数据库"
+horizontal_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="AticleContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cx8yq")
+text = "## 前言
+
+开发桌面级应用程序上，`QT`本身的兼容性架构做的非常不错，但是单纯从`Qt Creator`开发的用户界面来说，确实不是很美丽，以习惯于`Jetbrains`全家桶的开发来说，许多按键和工作习惯都需要调整，参考[Qt6Cractor初始化](https://www.astercasc.com/article/detail?articleId=AT1656963824290648)。所以我们考虑在使用`Qt`开发套件的情况下，在`CLion`的用户界面下工作，就很舒适了
+
+## 实现
+
+### qmake工程的处理
+
+对于`qmake`而言比较麻烦，因为`CLion`本身是不支持`qmake`直接构建的，所以这里有两个方案：
+
+方案一：将工程转为`CMake`，这个也是`Qt`的相对推荐的方式，一则`Qt`的源码的构建已经从`qmake`改变为了`Cmake`，参考[Build System Changes in Qt 6](https://doc.qt.io/qt-6/qt6-buildsystem.html)
+
+> The Qt 5 build system was built on top of [qmake](https://doc.qt.io/qt-6/qmake-manual.html). In Qt 6, we ported the build system to CMake.
+
+其次，`qmake`的构建方式可能在之后的版本中被弃用
+
+> qmake will still be supported in Qt 6 for user apps. But in Qt 7 it is likely to be completely dropped.
+> But cmake support is sure to get far more love now and int the future. So for long-term projects - better use cmake.
+
+具体如果将`qmake`转为`CMake`可以参考官方博客[Introducing qmake2cmake](https://www.qt.io/blog/introducing-qmake2cmake)
+
+`pip install qmake2cmake && qmake2cmake_all camera-auth-pro/ --min-qt-version 6.0`即可在`camera-auth-pro`目录下生成`CMakeLists.txt`，这个方法只适用于`Qt6`以上。`Qt5`即以下版本，简单的项目就自行转换把，复杂的项目可以参考使用[AUTOMOC](https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html)
+
+方案二：通过自定义编译命令的方式来进行编译，这里`CLion`支持的是[Compilation database](https://clang.llvm.org/docs/JSONCompilationDatabase.html)方式配置，即`compile_commands.json`。对于`Compliation database`，我们在`CMake`中我们可以使用`cmake`的`-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`命令参数，或者在`CMakeLists.txt`中添加`set(CMAKE_EXPORT_COMPILE_COMMANDS ON)`来自动生成，或者使用[Bear](https://github.com/rizsotto/Bear)自动生成`compile_commands.json`
+
+方案三：直接使用命令行编译和启动，这里要确认如果你按照了多个版本的`Qt`或者`Cmake`亦或`C++`版本需要在环境变量中确认使用的是否为项目所需的各种版本，具体可以参考`Qt`本身的配置：
+
+<img src=\"https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-article-img/2024/%E4%BD%BF%E7%94%A8CLion%E5%BC%80%E5%8F%91Qt%E5%BA%94%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95_1.jpg\" width=80%>
+
+可以在这里打开终端，测试命令的正确性，避免由于环境变量造成的构建失败。测试完成后将所需的环境变量配入系统或者`CLion`即可
+
+构建命令的一般样式为：`C:/Qt/5.15.2/mingw81_32/bin/qmake.exe Z:\\workspace\\qt\\camera-auth-pro\\camera-auth-pro\\camera-auth-pro.pro -spec win32-g++ \"CONFIG+=debug\" ; C:/Qt/Tools/mingw810_32/bin/mingw32-make.exe -j8`，小伙伴们根据自己的需求调整，然后在`CLion`配置命令行构建，配置如下图：
+
+<img src=\"https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-article-img/2024/%E4%BD%BF%E7%94%A8CLion%E5%BC%80%E5%8F%91Qt%E5%BA%94%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95_2.jpg\" width=80%>
+
+在设置环境变量的时候注意，目前版本`CLion`对于`windows`的支持不太好，如果你的版本也是通过`export`来设置环境变量的，你可以添加插件，也可以使用别名等来解决这个问题，我们这里选择直接通过分号来忽略`export`进行环境变量的设置：`; $env:Path=aa;bb;cc;`
+
+### CMake构建
+
+转换为CMake后，一般构建`CMakeLists.txt`如下
+
+```cmake
+# Project
+cmake_minimum_required(VERSION 3.27)
+project(camera-auth-pro VERSION 1.0 LANGUAGES C CXX)
+
+# Config
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTOUIC ON)
+set(CMAKE_PREFIX_PATH \"C:/Qt/5.15.2/mingw81_32\")
+
+# Includes
+include_directories(camera-auth-pro PRIVATE
+        3rdparty/arctern
+        3rdparty/opencv/include
+        3rdparty/qBreakpad/include
+        3rdparty/rkmedia
+)
+
+# Lib
+find_package(Qt5 COMPONENTS
+        Core
+        Gui
+        Sql
+        Widgets
+        Multimedia
+        MultimediaWidgets
+        Network
+        REQUIRED)
+
+link_directories(camera-auth-pro PRIVATE
+        3rdparty/qBreakpad/lib/windows
+)
+
+# Define
+add_definitions( -DRKAIQ )
+
+# Sources
+add_executable(camera-auth-pro main.cpp resouces.qrc
+        camera/camera.cpp camera/camera.h
+        camera/camera_core.cpp camera/camera_core.h
+        camera/camera_rk.cpp camera/camera_rk.h
+        camera/sample_common.cpp camera/sample_common.h
+        constant/base.cpp constant/base.h
+        constant/enums.h
+        index.cpp index.h
+        main.cpp
+        nfc/nfc_tool.cpp nfc/nfc_tool.h
+        nfc/serial_reader.h
+        nfc/uart_port.h
+        page/auth_table.cpp page/auth_table.h
+        page/black.cpp page/black.h
+        page/component/camera_frame.cpp page/component/camera_frame.h
+        page/component/header.cpp page/component/header.h
+        page/component/title.cpp page/component/title.h
+        page/component/wait_auth.cpp page/component/wait_auth.h
+        page/component/wait_net.cpp page/component/wait_net.h
+        page/component/wait_server.cpp page/component/wait_server.h
+        page/face_auth.cpp page/face_auth.h
+        page/home.cpp page/home.h
+        page/log_view.cpp page/log_view.h
+        page/manager_setting.cpp page/manager_setting.h
+        page/manager_setting_login.cpp page/manager_setting_login.h
+        page/no_net.cpp page/no_net.h
+        page/no_server.cpp page/no_server.h
+        service/api.cpp service/api.h
+        service/api_zf.cpp service/api_zf.h
+        service/base_config.cpp service/base_config.h
+        service/card_recognition.cpp service/card_recognition.h
+        service/face_recognition.cpp service/face_recognition.h
+        service/local_database.cpp service/local_database.h
+        service/log_record.cpp service/log_record.h
+        service/schedule.cpp service/schedule.h
+        utils/ui_util.cpp utils/ui_util.h
+)
+
+target_link_libraries(camera-auth-pro PRIVATE
+        Qt::Core
+        Qt::Gui
+        Qt::Multimedia
+        Qt::MultimediaWidgets
+        Qt::Network
+        Qt::Sql
+        Qt::Widgets
+        qBreakpad
+)
+```
+
+并且在`Settings`->`Build, Execution, Deployment`->`Toolchains`中配置正确的工具链：
+
+<img src=\"https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-article-img/2024/%E4%BD%BF%E7%94%A8CLion%E5%BC%80%E5%8F%91Qt%E5%BA%94%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95_3.jpg\" width=80%>
+
+即可让`CLion`完成正常编译工作，同时也可以在下方的`CMake`配置中选择自定义构建选项以及环境变量等，比如将`Build directory`修改为`..\\target`防止构建文件对于版本管理的干扰等等
+
+### 快捷键
+
+如果你需要完全的`QtCreator`快捷键，那么可以在`Settings`->`Keymap`中调整。如果你只是希望修改部分按键，主要习惯更依赖`IDEA`。那么可以先切换到`QtCreator`键盘映射，检索所需快捷键，比如我们习惯于使用`F4`切换头文件和源文件，在改为`QtCreator`后，检索`F4`，查看到该快捷键名称为`SwitchHeaderSource`即可切回`Windows`更改该快捷键的键位
+
+### 修改文件创建模板
+
+对于一般`C++`项目的新文件创建，我们可以使用两种`CLion`提供的默认模板，在`Setting`->`Editor`->`File and Code Templates`中可以查到，分别是`Qt Class`和`C++ Class`。但是如果我们需要使用创建`Qt`类两种都不好用，`Qt Class`会默认携带`ui`这对于我们纯手写界面工作的并不友好，而`C++ Class`创建的模板东西太少，所以小伙伴们如果有需要应当是自己重新手写一个比较方便，模板的格式和`Jetbrains`的其他产品一样：
+
+<img src=\"https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-article-img/2024/%E4%BD%BF%E7%94%A8CLion%E5%BC%80%E5%8F%91Qt%E5%BA%94%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95_4.jpg\" width=80%>
+
+这里给出参考：
+
+```c
+//.cpp
+#[[#include]]# \"${SYSTEM_FILENAME}.h\"
+
+${NAME}::${NAME}(QWidget *parent) : ${PARENT_CLASS}(parent) {
+    
+}
+
+${NAME}::~${NAME}() {
+
+}
+//.h
+#[[#ifndef]]# ${INCLUDE_GUARD}
+#[[#define]]# ${INCLUDE_GUARD}
+
+#[[#include]]# <${PARENT_CLASS}>
+
+class ${NAME} : public ${PARENT_CLASS} {
+Q_OBJECT
+
+public:
+    explicit ${NAME}(QWidget *parent = nullptr);
+    ~${NAME}() override;
+};
+
+#[[#endif]]# //${INCLUDE_GUARD}
+```
+
+我们需要利用子模板来达到创建两个的目的，然后在创建的时候选择自己的模板即可成功创建头文件和源文件
+
+<img src=\"https://astercasc-web-admin-1256368017.cos.ap-shanghai.myqcloud.com/admin-web-article-img/2024/%E4%BD%BF%E7%94%A8CLion%E5%BC%80%E5%8F%91Qt%E5%BA%94%E7%94%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95_5.jpg\" width=80%>
+
+## 参考资料
+
+[CMake Document](http://www.cmake.org/cmake/help/documentation.html)
+
+[CLion Compilation database](https://www.jetbrains.com/help/clion/compilation-database.html)
+
+[CLion Qt projects](https://www.jetbrains.com/help/clion/qt-tutorial.html)"
