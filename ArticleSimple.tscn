@@ -1,6 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://0sffbl8ylhnw"]
+[gd_scene load_steps=9 format=3 uid="uid://0sffbl8ylhnw"]
 
 [ext_resource type="StyleBox" uid="uid://bawggbd2nu5ye" path="res://style/articlesimplebk.tres" id="1_s1tlr"]
+[ext_resource type="StyleBox" uid="uid://bqeox8tc7ff3u" path="res://style/articleinbtn.tres" id="2_qhtdo"]
+[ext_resource type="StyleBox" uid="uid://cao5ggt1fjedp" path="res://style/articleinbtn-hover.tres" id="3_4eymw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fb4l4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0kbe"]
 bg_color = Color(0.223529, 0.223529, 0.247059, 1)
@@ -19,13 +23,21 @@ content_margin_top = 60.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
 
-[node name="Card" type="PanelContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1c2hf"]
+draw_center = false
+
+[node name="CardOut" type="PanelContainer"]
 custom_minimum_size = Vector2(450, 300)
 offset_right = 450.0
 offset_bottom = 300.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fb4l4")
+
+[node name="Card" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
 theme_override_styles/panel = ExtResource("1_s1tlr")
 
-[node name="CardContainer" type="MarginContainer" parent="."]
+[node name="CardContainer" type="MarginContainer" parent="Card"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -33,17 +45,20 @@ size_flags_vertical = 0
 theme_override_constants/margin_left = -25
 theme_override_constants/margin_top = -25
 
-[node name="CardBgContainer" type="PanelContainer" parent="CardContainer"]
+[node name="CardBgContainer" type="PanelContainer" parent="Card/CardContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_j0kbe")
 
-[node name="Title" type="Label" parent="CardContainer/CardBgContainer"]
+[node name="Title" type="Label" parent="Card/CardContainer/CardBgContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxEmpty_a8ibj")
 text = "this is  a article title"
 
-[node name="CardContent" type="Label" parent="."]
+[node name="CardContentContainer" type="VBoxContainer" parent="Card"]
+layout_mode = 2
+
+[node name="CardContent" type="Label" parent="Card/CardContentContainer"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 size_flags_vertical = 0
@@ -51,7 +66,17 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_rjk3e")
 text = "this is content this is content this is content this is content this is content
-this is contentthis is contentthis is content
-
-this is contentthis is contentthis is contentthis is content"
+this is contentthis is contentthis is content"
 autowrap_mode = 3
+
+[node name="Go" type="Button" parent="Card/CardContentContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(0.972549, 0.972549, 0.972549, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("2_qhtdo")
+theme_override_styles/hover = ExtResource("3_4eymw")
+theme_override_styles/pressed = ExtResource("3_4eymw")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1c2hf")
+text = "更多内容"

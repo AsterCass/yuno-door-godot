@@ -38,9 +38,9 @@ public partial class HomeProject : VBoxContainer
 			{
 				var objDic = articleList[count].AsGodotDictionary();
 				var instance = scene.Instantiate();
-				var thisLabel = instance.GetNode<Label>("CardContainer/CardBgContainer/Title");
+				var thisLabel = instance.GetNode<Label>("Card/CardContainer/CardBgContainer/Title");
 				thisLabel.Text = objDic["articleTitle"].AsString();
-				var thisContent = instance.GetNode<Label>("CardContent");
+				var thisContent = instance.GetNode<Label>("Card/CardContentContainer/CardContent");
 				thisContent.Text = objDic["articleBrief"].AsString().Replace("\n", "") + "...\n";
 				articleContainer.AddChild(instance);
 			}
