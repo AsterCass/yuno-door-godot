@@ -42,8 +42,16 @@ public partial class HomeProject : VBoxContainer
 				thisLabel.Text = objDic["articleTitle"].AsString();
 				var thisContent = instance.GetNode<Label>("Card/CardContentContainer/CardContent");
 				thisContent.Text = objDic["articleBrief"].AsString().Replace("\n", "") + "...\n";
+				var thisBtn = instance.GetNode<Button>("Card/CardContentContainer/Go");
+				thisBtn.Pressed += () => onPressToReadMore(objDic["id"].AsString());
 				articleContainer.AddChild(instance);
 			}
 		}
+	}
+
+	private void onPressToReadMore(string articleId)
+	{
+		GD.Print(articleId);
+		OS.Alert("不支持当前功能，请移步astercasc.com体验完整功能");
 	}
 }

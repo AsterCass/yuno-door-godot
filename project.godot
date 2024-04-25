@@ -27,3 +27,7 @@ project/assembly_name="YunoDesktop"
 [gui]
 
 theme/custom_font="res://font/RobotoSlab-VariableFont_wght.ttf"
+
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
