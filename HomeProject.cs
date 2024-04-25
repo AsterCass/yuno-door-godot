@@ -9,11 +9,11 @@ public partial class HomeProject : VBoxContainer
 	{
 		HttpRequest articleRequest = GetNode<HttpRequest>("ArticleRequest");
 		articleRequest.RequestCompleted += OnArticleReqCompleted;
-		articleRequest.Request(ServerInfo.ServerBase.KotomiAddress + "/article/list?articleType=1&offset=0&limit=3");
+		articleRequest.Request(ServerInfo.ServerBase.KotomiAddress + "/article/list?articleType=1&offset=0&limit=10");
 
 		HttpRequest lifeRequest = GetNode<HttpRequest>("LifeRequest");
 		lifeRequest.RequestCompleted += OnLiftReqCompleted;
-		lifeRequest.Request(ServerInfo.ServerBase.KotomiAddress + "/article/list?articleType=2&offset=0&limit=3");
+		lifeRequest.Request(ServerInfo.ServerBase.KotomiAddress + "/article/list?articleType=2&offset=0&limit=10");
 	}
 
 	private void OnArticleReqCompleted(long result, long responseCode, string[] headers, byte[] body)
@@ -40,6 +40,8 @@ public partial class HomeProject : VBoxContainer
 				var instance = scene.Instantiate();
 				var thisLabel = instance.GetNode<Label>("CardContainer/CardBgContainer/Title");
 				thisLabel.Text = objDic["articleTitle"].AsString();
+				var thisContent = instance.GetNode<Label>("CardContent");
+				thisContent.Text = objDic["articleBrief"].AsString().Replace("\n", "") + "...\n";
 				articleContainer.AddChild(instance);
 			}
 		}

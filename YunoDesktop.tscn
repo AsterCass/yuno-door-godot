@@ -59,9 +59,8 @@ text = "技术备录"
 
 [node name="HomeArticleContainer" type="HFlowContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
 layout_mode = 2
-theme_override_constants/h_separation = 35
-theme_override_constants/v_separation = 35
-alignment = 1
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 100
 
 [node name="HomeLife" type="Label" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
 layout_mode = 2
@@ -70,21 +69,9 @@ text = "生活题记"
 
 [node name="HomeLifeContainer" type="HFlowContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
 layout_mode = 2
-theme_override_constants/h_separation = 35
-theme_override_constants/v_separation = 35
-alignment = 1
-
-[node name="HomeVideo" type="Label" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
-layout_mode = 2
-theme = ExtResource("3_6cb30")
-text = "视频资源"
-
-[node name="HomeVideoContainer" type="HFlowContainer" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
-layout_mode = 2
-alignment = 1
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 100
 
 [node name="ArticleRequest" type="HTTPRequest" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
 
 [node name="LifeRequest" type="HTTPRequest" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
-
-[node name="VideoRequest" type="HTTPRequest" parent="HomeScroll/HomeContainer/Home/HomeMain/HomeStyle/HomeProject"]
